@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2f2e85bd-5458-41a0-93ff-d053b88c151d" >
+		<http:listener-connection host="0.0.0.0" port="8089" />
+	</http:listener-config>
+	<flow name="choicerouterFlow" doc:id="d5b7d7cd-4407-4ef8-a527-bc5b3276eece" >
+		<http:listener doc:name="Listener" doc:id="eefb69e3-dbcf-4374-8594-5dbbcc1cd502" config-ref="HTTP_Listener_config" path="/test"/>
+		<choice doc:name="Choice" doc:id="454c7950-427a-4a73-9b4e-cfa97cf4435c" >
+			<when expression='#[attributes.queryParams.user=="Mark"]'>
+				<set-payload value="This is Mark" doc:name="Set Payload" doc:id="4a22833d-2719-4baf-acc2-e50330b02e65" />
+			</when>
+			<when expression='#[attributes.queryParams.user=="Danae"]'>
+				<set-payload value="This is Danae" doc:name="Set Payload" doc:id="d7c2793b-6104-41d1-964a-44278d1c2be7" />
+			</when>
+			<when expression='#[attributes.queryParams.user=="Rose"]'>
+				<set-payload value="This is Rosse" doc:name="Set Payload" doc:id="d11d95d1-6589-430c-9ca9-5324f141cbc2" />
+			</when>
+			<otherwise >
+				<set-payload value="You are not recognized" doc:name="Set Payload" doc:id="0bb722d7-fc70-4c6b-9a74-4895abb5fc10" />
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="38265b9e-8102-4327-95d4-924a878acd10" />
+	</flow>
+</mule>
